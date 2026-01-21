@@ -1,0 +1,29 @@
+@echo off
+setlocal enableDelayedExpansion
+
+:: Yönetici olarak çalışıyor mu kontrol et
+>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+if %errorlevel% NEQ 0 (
+    echo Yönetici olarak yeniden baslatiliyor...
+    powershell -Command "Start-Process '%~f0' -Verb RunAs"
+    exit /b
+)
+
+REM Edge WebView Application klasörü
+set base="C:\Program Files (x86)\Microsoft\EdgeWebView\Application"
+
+echo WebView sürümleri taranıyor...
+
+for /d %%D in (%base%\*) do (
+    if exist "%%D\msedgewebview2.exe" (
+        echo %%D\msedgewebview2.exe
+
+        REM Outbound engelle
+        netsh advfirewall firewall add rule name="Block_WebView_OUT_%%~nxD" dir=out program="%%D\msedgewebview2.exe" action=block enable=yes
+
+        REM Inbound engelle
+        netsh advfirewall firewall add rule name="Block_WebView_IN_%%~nxD" dir=in program="%%D\msedgewebview2.exe" action=block enable=yes
+    )
+)
+
+exit
