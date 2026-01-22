@@ -67,3 +67,5 @@ Buradaki kodu bir metin belgesine kopyalayıp belgeyi farklı kaydet diyerek bat
     
     echo TAMAMLANDI.
     exit
+
+https://www.yasirolmez.com/2026/01/msedgewebview2-error-autocad-crack.html
